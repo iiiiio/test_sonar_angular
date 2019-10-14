@@ -46,7 +46,7 @@ jobs:
     # - "./travis_scripts/merge_script.sh"
     - echo "skip"
     - ng lint
-    - ng build --prod --base-href https://github.com/iiiiio/test_sonar_angular.git
+    - ng build --prod --base-href https://github.com/coassets/elsa.git
 
 branches:
   only:
