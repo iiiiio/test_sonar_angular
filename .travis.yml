@@ -1,0 +1,54 @@
+dist: trusty
+
+language: node_js
+
+node_js:
+  - "9"
+
+addons:
+  apt:
+    packages:
+    - python3-dev
+    - libmysqlclient-dev
+  sonarcloud:
+    organization: iiiiio
+
+install:
+  - npm install -g @angular/cli
+
+stages:
+- Test
+- Sonar-scanning
+- name: Quality Gate
+  if: branch = staging AND type = push OR branch = master AND type = push
+- name: Deploy
+  if: branch = staging AND type = push OR branch = master AND type = push
+
+jobs:
+  allow_failures:
+  - stage: Test
+  - stage: Quality Gate
+  include:
+  - stage: Test
+    script:
+    - ng test --codeCoverage=true --karmaConfig=karma.conf.js
+  - stage: Sonar-scanning
+    script:
+    # - python report_scripts/generate_coverage_report_v1.1.py
+    - echo "skip"
+    - sonar-scanner
+  - stage: Quality Gate
+    script:
+    # - python travis_scripts/scanner_result_process.py
+    - echo "skip"
+  - stage: Deploy
+    install: skip
+    script:
+    # - "./travis_scripts/merge_script.sh"
+    - echo "skip"
+    - ng lint
+    - ng build --prod --base-href https://github.com/iiiiio/test_sonar_angular.git
+
+branches:
+  only:
+  - master
