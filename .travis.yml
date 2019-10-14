@@ -13,6 +13,9 @@ install:
   - npm install -g @angular/cli
   - npm install --save-dev @angular-devkit/build-angular
 
+before_script:
+- cd src
+
 stages:
 - Test
 - Sonar-scanning
@@ -28,11 +31,10 @@ jobs:
   include:
   - stage: Test
     script:
-    - ng test --codeCoverage=true --karmaConfig=karma.conf.js --watch=false --browsers=ChromeHeadless
+    - ng test --watch=false --browsers=ChromeHeadless
   - stage: Sonar-scanning
     script:
-    # - python report_scripts/generate_coverage_report_v1.1.py
-    - echo "skip"
+    - ng test --codeCoverage=true --karmaConfig=karma.conf.js --watch=false --browsers=ChromeHeadless
     - sonar-scanner
   - stage: Quality Gate
     script:
