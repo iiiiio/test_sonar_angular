@@ -28,7 +28,7 @@ jobs:
   include:
   - stage: Test
     script:
-    - ng test --codeCoverage=true --karmaConfig=karma.conf.js
+    - ng test --codeCoverage=true --karmaConfig=karma.conf.js --watch=false --browsers=ChromeHeadless
   - stage: Sonar-scanning
     script:
     # - python report_scripts/generate_coverage_report_v1.1.py
