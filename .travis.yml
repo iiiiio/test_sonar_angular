@@ -11,6 +11,7 @@ addons:
 
 install:
   - npm install -g @angular/cli
+  - npm install --save-dev @angular-devkit/build-angular
 
 stages:
 - Test
@@ -25,10 +26,6 @@ jobs:
   - stage: Test
   - stage: Quality Gate
   include:
-  - stage: Build
-    script:
-      - ng lint
-      - ng build --prod --base-href https://github.com/iiiiio/test_sonar_angular.git
   - stage: Test
     script:
     - ng test --codeCoverage=true --karmaConfig=karma.conf.js
@@ -46,6 +43,8 @@ jobs:
     script:
     # - "./travis_scripts/merge_script.sh"
     - echo "skip"
+    - ng lint
+    - ng build --prod --base-href https://github.com/iiiiio/test_sonar_angular.git
 
 branches:
   only:
